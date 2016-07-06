@@ -1,0 +1,3 @@
+[submodule "JavaFrame"]
+	path = JavaFrame
+	url = https://github.com/LintfordPickle/JavaFrame.git
