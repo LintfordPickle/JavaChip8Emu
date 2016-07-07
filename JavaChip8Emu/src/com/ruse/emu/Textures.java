@@ -1,4 +1,4 @@
-package com.ruse;
+package com.ruse.emu;
 
 import com.ruse.javabase.graphics.Art;
 import com.ruse.javabase.graphics.Bitmap;
