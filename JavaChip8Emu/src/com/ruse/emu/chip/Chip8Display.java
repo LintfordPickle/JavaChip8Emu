@@ -57,7 +57,7 @@ public class Chip8Display {
 		}
 
 		// Then copy our bitmap into the JavaFrame display
-		pBitmap.draw(mSurface, mPositionX, mPositionY, 0, 0, mSurface.width, mSurface.height, mScale, 255);
+		pBitmap.draw(mSurface, mPositionX, mPositionY, 0, 0, mSurface.width, mSurface.height, mScale);
 	}
 
 	// ---------------------------------------
