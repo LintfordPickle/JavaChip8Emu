@@ -4,8 +4,9 @@
 package com.ruse.emu;
 
 import com.ruse.emu.chip.Chip8;
-import com.ruse.emu.chip.Chip8Display;
-import com.ruse.emu.chip.Chip8Thread;
+import com.ruse.emu.util.Chip8Display;
+import com.ruse.emu.util.Chip8Loader;
+import com.ruse.emu.util.Chip8Thread;
 import com.ruse.javabase.Game;
 import com.ruse.javabase.graphics.Art;
 
@@ -20,6 +21,7 @@ public class Chip8Base extends Game implements Runnable {
 	private Chip8 mChip; // The Chip-8 CPU
 	private Chip8Thread mChip8Thread;
 	private Chip8Display mChipDisplay;
+	private Chip8Loader mChip8Loader;
 
 	// ---------------------------------------
 	// Properties
@@ -37,6 +39,8 @@ public class Chip8Base extends Game implements Runnable {
 		mChipDisplay = new Chip8Display(mChip);
 		mChipDisplay.setPosition(5, 30);
 		mChipDisplay.setScale(10);
+		
+		mChip8Loader = new Chip8Loader(mChip);
 
 	}
 

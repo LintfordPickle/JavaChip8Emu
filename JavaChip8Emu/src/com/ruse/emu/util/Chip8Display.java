@@ -1,5 +1,6 @@
-package com.ruse.emu.chip;
+package com.ruse.emu.util;
 
+import com.ruse.emu.chip.Chip8;
 import com.ruse.javabase.graphics.Bitmap;
 
 /**

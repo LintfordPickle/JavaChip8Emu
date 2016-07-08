@@ -109,4 +109,17 @@ public class Chip8 {
 		// execute opcode
 	}
 
+	public void setMemory(char[] pMem, int pOffset){
+		if(pOffset + pMem.length > 4094){
+			throw new RuntimeException("Not enough memory on Chip-8!");
+		}
+		 
+		if(pMem == null || pMem.length == 0) return;
+		
+		for(int i = 0; i < pMem.length; i++){
+			mMemory[pOffset + i] = pMem[i];
+		}
+		
+	}
+	
 }
