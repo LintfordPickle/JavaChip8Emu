@@ -3,14 +3,13 @@
  */
 package com.ruse.emu;
 
-import com.ruse.emu.chip.Chip;
+import com.ruse.emu.chip.Chip8;
 import com.ruse.emu.chip.Chip8Display;
+import com.ruse.emu.chip.Chip8Thread;
 import com.ruse.javabase.Game;
-import com.ruse.javabase.JavaBase;
 import com.ruse.javabase.graphics.Art;
-import com.ruse.javabase.graphics.Display;
 
-public class Chip8Base extends Game {
+public class Chip8Base extends Game implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +17,8 @@ public class Chip8Base extends Game {
 	// Variables
 	// ---------------------------------------
 
-	private Chip mChip; // The Chip-8 CPU
+	private Chip8 mChip; // The Chip-8 CPU
+	private Chip8Thread mChip8Thread;
 	private Chip8Display mChipDisplay;
 
 	// ---------------------------------------
@@ -28,16 +28,15 @@ public class Chip8Base extends Game {
 	public Chip8Base(String pWindowTitle) {
 		super(pWindowTitle);
 
-		mChip = new Chip();
+		mChip = new Chip8();
 		mChip.initialise();
 
-		mChipDisplay = new Chip8Display();
-		mChipDisplay.initialise(mChip);
+		mChip8Thread = new Chip8Thread(mChip);
+		mChip8Thread.start();
+
+		mChipDisplay = new Chip8Display(mChip);
 		mChipDisplay.setPosition(5, 30);
 		mChipDisplay.setScale(10);
-
-		// Start the chip running
-		mChip.run();
 
 	}
 
@@ -61,13 +60,10 @@ public class Chip8Base extends Game {
 		display().draw(Art.items, 128 + 16, (int) (5 + Math.sin((time + 50) * 0.01f) * 5), 8, 0, 8, 8, 1);
 		display().draw(Art.items, 128 + 24, (int) (5 + Math.sin((time + 100) * 0.01f) * 5), 8, 0, 8, 8, 1);
 
-		mChipDisplay.draw(display());
-
-	}
-
-	@Override
-	public void render(Display display) {
-		super.render(display);
+		if(mChip.dirtyDisplay()){
+			mChipDisplay.draw(display());
+			
+		}
 
 	}
 
@@ -76,7 +72,7 @@ public class Chip8Base extends Game {
 	// ---------------------------------------
 
 	public static void main(String[] args) {
-		JavaBase lBase = new Chip8Base("chip-8 emu");
+		Chip8Base lBase = new Chip8Base("chip-8 emu");
 		lBase.openWindow();
 
 	}

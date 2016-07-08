@@ -2,8 +2,16 @@ package com.ruse.emu.chip;
 
 import com.ruse.javabase.graphics.Bitmap;
 
-// This class reads the display array of the chip8 (64*32 bytes), and
-// displays it into the JFrame
+/**
+ *
+ * This {@link Chip8Display} reads the display array of the {@link Chip8}
+ * instance passed in, and displays it into the JFrame (display array is
+ * typically 64*32 bytes).
+ * 
+ * This class acquires a lock on the {@link Chip8.display()} during
+ * {@link Chip8Display.draw()}
+ *
+ */
 public class Chip8Display {
 
 	// ---------------------------------------
@@ -11,7 +19,7 @@ public class Chip8Display {
 	// ---------------------------------------
 
 	private Bitmap mSurface;
-	private byte[] mDisplay;
+	private byte[] mChip8DisplayArray;
 	private int mPositionX;
 	private int mPositionY;
 	private int mScale = 1;
@@ -27,33 +35,31 @@ public class Chip8Display {
 	// Constructor
 	// ---------------------------------------
 
-	public Chip8Display() {
+	public Chip8Display(Chip8 pChip) {
 		// TODO: Need to allow for properly reseting the display (when the chip8
 		// is reset).
 		mSurface = new Bitmap(64, 32);
 		mScale = 1;
-		
+
+		mChip8DisplayArray = pChip.display();
+
 	}
 
 	// ---------------------------------------
 	// Core-Methods
 	// ---------------------------------------
 
-	public void initialise(Chip pChip) {
-		if (pChip == null)
-			return;
-
-		mDisplay = pChip.display();
-	}
-
 	public void draw(Bitmap pBitmap) {
 		// First clear the emulator window
 		mSurface.clear(mBackgroundColor);
 
-		// Set the chip8 display bits into our bitmap
-		for (int i = 0; i < 64 * 32; i++) {
-			if (mDisplay[i] != (byte) 0)
-				mSurface.pixels[i] = mForegroundColor;
+		synchronized (mChip8DisplayArray) { // lock display array before access
+			// Set the chip8 display bits into our bitmap
+			for (int i = 0; i < mChip8DisplayArray.length; i++) {
+				if (mChip8DisplayArray[i] != (byte) 0)
+					mSurface.pixels[i] = mForegroundColor;
+			}
+
 		}
 
 		// Then copy our bitmap into the JavaFrame display
