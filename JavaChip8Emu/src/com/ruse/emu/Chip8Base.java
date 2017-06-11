@@ -39,8 +39,9 @@ public class Chip8Base extends Game implements Runnable {
 		mChipDisplay = new Chip8Display(mChip);
 		mChipDisplay.setPosition(5, 30);
 		mChipDisplay.setScale(10);
-		
+
 		mChip8Loader = new Chip8Loader(mChip);
+		mChip8Loader.loadProgram("/programs/pong2.c8");
 
 	}
 
@@ -64,10 +65,7 @@ public class Chip8Base extends Game implements Runnable {
 		display().draw(Art.items, 128 + 16, (int) (5 + Math.sin((time + 50) * 0.01f) * 5), 8, 0, 8, 8, 1);
 		display().draw(Art.items, 128 + 24, (int) (5 + Math.sin((time + 100) * 0.01f) * 5), 8, 0, 8, 8, 1);
 
-		if(mChip.dirtyDisplay()){
-			mChipDisplay.draw(display());
-			
-		}
+		mChipDisplay.draw(display());
 
 	}
 

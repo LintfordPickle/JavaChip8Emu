@@ -19,6 +19,7 @@ public class Chip8Display {
 	// Variables
 	// ---------------------------------------
 
+	private Chip8 mChip8;
 	private Bitmap mSurface;
 	private byte[] mChip8DisplayArray;
 	private int mPositionX;
@@ -40,8 +41,10 @@ public class Chip8Display {
 		// TODO: Need to allow for properly reseting the display (when the chip8
 		// is reset).
 		mSurface = new Bitmap(64, 32);
+		mSurface.clear(mBackgroundColor);
 		mScale = 1;
 
+		mChip8 = pChip;
 		mChip8DisplayArray = pChip.display();
 
 	}
@@ -51,6 +54,8 @@ public class Chip8Display {
 	// ---------------------------------------
 
 	public void draw(Bitmap pBitmap) {
+		if(!mChip8.dirtyDisplay()) return;
+		
 		// First clear the emulator window
 		mSurface.clear(mBackgroundColor);
 
